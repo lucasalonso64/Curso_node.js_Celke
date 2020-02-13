@@ -31,6 +31,17 @@ const connection = mysql.createConnection({
     }
   })
 
+  connection.connect(function(err){
+      if(err) console.error('Erro ao realizar a conexão com BD: ' + err.stack); return;
+  });
+  connection.query("INSERT INTO users(nome, email) VALUES ('kELLen', 'kellen@celke.com.br')", function(err, result){
+      if(!err){
+          console.log('Usuario cadastrado com sucesso!');
+      }else{
+          console.log('Erro ao cadastrar usuario')
+      }
+  })
+
 
 
 
