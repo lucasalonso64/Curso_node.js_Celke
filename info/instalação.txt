@@ -1,0 +1,2 @@
+npm init
+npm install mysql (https://www.npmjs.com/package/mysql#install)
