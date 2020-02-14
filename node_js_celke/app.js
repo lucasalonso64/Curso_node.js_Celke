@@ -9,7 +9,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
     host     : 'localhost',
     user     : 'root',
-    password : 'epc@123',
+    password : '2209',
     database: 'celke'
 
   });
@@ -42,7 +42,29 @@ const connection = mysql.createConnection({
       }
   })
 
+  connection.query("UPDATE users SET nome = 'Alonso Sistemas' WHERE id =1", function(err, result){
+      if(!err){
+            console.log('usuario editado com sucesso!');
+      }else {
+          console.log('Erro: o usuario nao foi editado!');
+      }
+  })
 
+  connection.query("SELECT * FROM users", function(err, result){
+      if(!err){
+          console.log('Sua consulta não retornou nenhum registro');
+      }else{
+          console.log('Consulta concluída com sucesso!');
+      }
+  })
+
+  connection.query("DELETE FROM users WHERE id = 5", function(err, result){
+    if(!err){
+          console.log('usuario DELETADO COM SUCESSO!');
+    }else {
+        console.log('Erro: NÃO FOI POSSIVEL DELETAR!');
+    }
+})
 
 
 
