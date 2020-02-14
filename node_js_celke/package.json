@@ -4,8 +4,13 @@
   "description": "cursonode",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "mysql": "^2.18.1"
+    "express-handlebars": "^3.1.0",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.1.0",
+    "sequelize": "^5.21.4",
+    "sequelize-cli": "^5.5.1"
   },
   "devDependencies": {},
   "scripts": {
