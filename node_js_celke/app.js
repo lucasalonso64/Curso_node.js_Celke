@@ -23,9 +23,18 @@ app.use(bodyParser.json())
 app.get('/pagamento', function(req, res){
     Pagamento.findAll({order: [['id', 'DESC']]}).then(function(pagamentos){
         res.render('pagamento', {pagamentos: pagamentos});
-    })
-    
+    })    
 });
+
+app.get('/del-pagamento/:id', function(req, res){
+    Pagamento.destroy({
+            where: {'id' : req.params.id }
+    }).then(function(){
+        res.send("Pagamento deletado")
+    }).catch(function(erro){
+        res.send("Não foi possível deltar o pagamento")
+    })
+})
 
 app.get('/cad-pagamento', function(req, res){
     res.render('cad-pagamento');
