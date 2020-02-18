@@ -2,8 +2,10 @@ const express = require("express");
 const app = express();
 const handlebars = require("express-handlebars");
 const bodyParser = require("body-parser")
-const moment = require('moment')
-const Pagamento = require("./models/Pagamento")
+const moment = require('moment');
+const session = require('express-session');
+const flash = require('connect-flash');
+const Pagamento = require("./models/Pagamento");
 
 
 app.engine('handlebars', handlebars({
@@ -19,6 +21,21 @@ app.set('view engine', 'handlebars')
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+// Sessão
+app.use(session({
+  secret: 'clekeonsession',
+  resave: true,
+  saveUninitialized: true, 
+}))
+
+app.use(flash())
+//Middleware
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash("success_msg")
+    res.locals.error_msg = req.flash("error_msg")
+    next();
+})
+
 //Rotas
 app.get('/pagamento', function(req, res){
     Pagamento.findAll({order: [['id', 'DESC']]}).then(function(pagamentos){
@@ -30,9 +47,10 @@ app.get('/del-pagamento/:id', function(req, res){
     Pagamento.destroy({
             where: {'id' : req.params.id }
     }).then(function(){
-        res.send("Pagamento deletado")
+        req.flash("success_msg", "Pagamento apagado com sucesso")     
+       res.redirect('/pagamento');
     }).catch(function(erro){
-        res.send("Não foi possível deltar o pagamento")
+        req.flash("error_msg", "Pagamento não apagado com sucesso")      
     })
 })
 
@@ -45,12 +63,11 @@ app.post('/add-pagamento', function(req, res){
         nome: req.body.nome,
         valor: req.body.valor
     }).then(function(){
+        req.flash("success_msg", "Pagamento cadastrado com sucesso!")
         res.redirect('/pagamento')
-        //res.send("Pagamento cadastro com sucesso!")
     }).catch(function(erro){
-        res.send("Erro: Pagamento não foi cadastrado com sucesso!" + erro)
-    })
-    //res.send("Nome: " + req.body.nome + "<br>Valor: " + req.body.valor + "<br>") 
+        req.flash("error_msg", "Pagamento não foi cadastrado com sucesso!")
+    })  
 })
 
 app.listen(3333);
