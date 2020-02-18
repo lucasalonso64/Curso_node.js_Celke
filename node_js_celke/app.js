@@ -85,6 +85,22 @@ app.get('/edit-pagamento/:id', function (req, res) {
         })
 })
 
+
+// Visualizar detalhes do pagamento
+app.get('/vis-pagamento/:id', function (req, res) {
+
+    Pagamento.findByPk(req.params.id)
+        .then(post => {
+            res.render('vis-pagamento', {
+                id: req.params.id,
+                nome: post.nome,
+                valor: post.valor
+            })
+        }).catch(function (erro) {
+            req.flash("error_msg", "Erro: Pagamento não encontrado!")
+        })
+})
+
 //Editar no banco de dados
 app.post('/update-pagamento/:id', function(req, res) {
     Pagamento.update({
