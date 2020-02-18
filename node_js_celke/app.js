@@ -23,9 +23,9 @@ app.use(bodyParser.json())
 
 // Sessão
 app.use(session({
-  secret: 'clekeonsession',
-  resave: true,
-  saveUninitialized: true, 
+    secret: 'clekeonsession',
+    resave: true,
+    saveUninitialized: true,
 }))
 
 app.use(flash())
@@ -37,37 +37,67 @@ app.use((req, res, next) => {
 })
 
 //Rotas
-app.get('/pagamento', function(req, res){
-    Pagamento.findAll({order: [['id', 'DESC']]}).then(function(pagamentos){
-        res.render('pagamento', {pagamentos: pagamentos});
-    })    
+app.get('/pagamento', function (req, res) {
+    Pagamento.findAll({ order: [['id', 'DESC']] }).then(function (pagamentos) {
+        res.render('pagamento', { pagamentos: pagamentos });
+    })
 });
 
-app.get('/del-pagamento/:id', function(req, res){
+app.get('/del-pagamento/:id', function (req, res) {
     Pagamento.destroy({
-            where: {'id' : req.params.id }
-    }).then(function(){
-        req.flash("success_msg", "Pagamento apagado com sucesso")     
-       res.redirect('/pagamento');
-    }).catch(function(erro){
-        req.flash("error_msg", "Pagamento não apagado com sucesso")      
+        where: { 'id': req.params.id }
+    }).then(function () {
+        req.flash("success_msg", "Pagamento apagado com sucesso")
+        res.redirect('/pagamento');
+    }).catch(function (erro) {
+        req.flash("error_msg", "Pagamento não apagado com sucesso")
     })
 })
 
-app.get('/cad-pagamento', function(req, res){
+app.get('/cad-pagamento', function (req, res) {
     res.render('cad-pagamento');
 });
 
-app.post('/add-pagamento', function(req, res){
+app.post('/add-pagamento', function (req, res) {
     Pagamento.create({
         nome: req.body.nome,
         valor: req.body.valor
-    }).then(function(){
+    }).then(function () {
         req.flash("success_msg", "Pagamento cadastrado com sucesso!")
         res.redirect('/pagamento')
-    }).catch(function(erro){
+    }).catch(function (erro) {
         req.flash("error_msg", "Pagamento não foi cadastrado com sucesso!")
-    })  
+    })
+})
+
+// Editar o formulário cadastrar
+app.get('/edit-pagamento/:id', function (req, res) {
+
+    Pagamento.findByPk(req.params.id)
+        .then(post => {
+            res.render('edit-pagamento', {
+                id: req.params.id,
+                nome: post.nome,
+                valor: post.valor
+            })
+        }).catch(function (erro) {
+            req.flash("error_msg", "Erro: Pagamento não encontrado!")
+        })
+})
+
+//Editar no banco de dados
+app.post('/update-pagamento/:id', function(req, res) {
+    Pagamento.update({
+        nome: req.body.nome,
+        valor: req.body.valor
+    },{
+        where: {id: req.params.id}
+    }).then(function(){
+        req.flash("success_msg", "Erro: Pagamento editado com sucesso!")
+        res.redirect('/pagamento')
+    }).catch(function(erro){
+        req.flash("error_msg", "Erro: Pagamento não editado com sucesso!")
+    })
 })
 
 app.listen(3333);
