@@ -81,7 +81,7 @@ app.get('/edit-pagamento/:id', function (req, res) {
                 valor: post.valor
             })
         }).catch(function (erro) {
-            req.flash("error_msg", "Erro: Pagamento não encontrado!")
+            req.flash("error_msg", "Pagamento não encontrado!")
         })
 })
 
@@ -109,7 +109,7 @@ app.post('/update-pagamento/:id', function(req, res) {
     },{
         where: {id: req.params.id}
     }).then(function(){
-        req.flash("success_msg", "Erro: Pagamento editado com sucesso!")
+        req.flash("success_msg", "Pagamento editado com sucesso!")
         res.redirect('/pagamento')
     }).catch(function(erro){
         req.flash("error_msg", "Erro: Pagamento não editado com sucesso!")
