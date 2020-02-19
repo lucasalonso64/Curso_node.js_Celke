@@ -6,6 +6,7 @@ const moment = require('moment');
 const session = require('express-session');
 const flash = require('connect-flash');
 const Pagamento = require("./models/Pagamento");
+const path = require('path')
 
 
 app.engine('handlebars', handlebars({
@@ -35,6 +36,9 @@ app.use((req, res, next) => {
     res.locals.error_msg = req.flash("error_msg")
     next();
 })
+
+// Configuração do Bootstrap
+app.use(express.static(path.join(__dirname, "public")))
 
 //Rotas
 app.get('/pagamento', function (req, res) {
