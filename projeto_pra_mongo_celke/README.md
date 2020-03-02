@@ -12,3 +12,6 @@ npm install --save body-parser
 
 //Instalar o Mongoose
 npm install --save mongoose
+
+// Instalar o Mongodb
+npm install --save mongodb

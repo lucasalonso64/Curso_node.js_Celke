@@ -6,6 +6,7 @@ require("../models/CatPagamento")
 const CatPagamento = mongoose.model('catpagamento')
 
 
+
 router.get('/', (req, res) => {
     //res.send("Página incial do administrativo")
     res.render("admin/index")
@@ -28,10 +29,12 @@ router.post('/add-cat-pagamento', (req, res) => {
         nome: req.body.nome
     }
     new CatPagamento(addCatPagamento).save().then(() => {
-        console.log("Categoria de pagamento cadastrado com sucesso")
+        req.flash("success_msg", "Categoria de pagamento cadastrado com sucesso" )
+        res.redirect('/admin/cat-pagamentos')
 
     }).catch((erro) => {
-        console.log("Erro: Categoria de pagamento não cadastrado com sucesso")
+        req.flash("error_msg", "Categoria de pagamento não cadastrado com sucesso" )
+       
     })
 
 })
