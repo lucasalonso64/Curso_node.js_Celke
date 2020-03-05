@@ -15,7 +15,13 @@ router.get('/pagamentos', (req, res) => {
 })
 
 router.get('/cat-pagamentos', (req, res) => {
-    res.render("admin/cat-pagamentos")
+    CatPagamento.find().then((catpagamento) => {
+        res.render("admin/cat-pagamentos", {catpagamentos: catpagamento})
+    }).catch((erro) => {
+        req.flash("error_msg", "Error: Categoria de pagamento não encontrada!")
+        res.render("admin/cat-pagamentos")
+    })
+   
 })
 
 router.get('/cad-cat-pagamento', (req, res) => {
@@ -41,6 +47,38 @@ router.post('/add-cat-pagamento', (req, res) => {
             req.flash("error_msg", "Error: Categoria de pagamento não foi  cadastrada com sucesso!")
         })
     }
+})
+
+
+router.get('/edit-cat-pagamento/:id', (req, res) => {
+    CatPagamento.findOne({_id: req.params.id}).then((catpagamento) => {
+        res.render("admin/edit-cat-pagamento", {catpagamento: catpagamento})
+    }).catch((erro) => {
+        req.flash("error_msg", "Error: Categoria de pagamento não encontrada!")
+        res.redirect("admin/cat-pagamento")
+    })
+  
+})
+
+
+
+router.post('/update-cat-pagamento', (req, res) => {
+    CatPagamento.findOne({_id: req.body.id}).then((catpagamento) =>{
+        catpagamento.nome = req.body.nome
+        catpagamento.save().then(() => {
+            req.flash("success_msg", "Categoria de pagamento editada com sucesso!")
+            res.redirect("/admin/cat-pagamentos")
+
+        }).catch((erro) => {
+            req.flash("error_msg", "Error: Categoria de pagamento não foi editada com sucesso!")
+            res.redirect("/admin/cat-pagamentos")
+
+        })
+
+    }).catch((erro) => {
+        req.flash("error_msg", "Error: Categoria de pagamento não encontrada!")
+        res.redirect("/admin/cat-pagamentos")
+    })
 })
 
 //Exportar o módulo de rotas

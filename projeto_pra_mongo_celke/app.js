@@ -34,6 +34,8 @@ app.use(bodyParser.json())
 app.engine('handlebars', handlebars({ defaultLayout: "main" }))
 app.set("view engine", 'handlebars')
 
+
+
 //Conexão com banco de dados
 mongoose.connect('mongodb://localhost/celke', {
     useNewUrlParser: true,
