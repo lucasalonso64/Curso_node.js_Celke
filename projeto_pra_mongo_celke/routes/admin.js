@@ -81,5 +81,19 @@ router.post('/update-cat-pagamento', (req, res) => {
     })
 })
 
+
+router.get('del-cat-pagamento/:id', (req, res) => {
+    CatPagamento.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Categoria de pagamento apagada com sucesso!")
+        res.redirect("/admin/cat-pagamentos")
+
+    }).catch((erro) => {
+        req.flash("error_msg", "Error: Categoria de pagamento não foi apagada!")
+        res.redirect("/admin/cat-pagamentos")
+    })
+})
+
+
+
 //Exportar o módulo de rotas
 module.exports = router
