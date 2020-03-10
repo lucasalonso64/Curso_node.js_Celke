@@ -12,7 +12,7 @@ const mongoose = require('mongoose');
 
 
 // Modelo utilizando Arrow functions 
-mongoose.connect('mongodb://localhost:27017/celke', {
+mongoose.connect('mongodb://localhost:27017/celke20', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
